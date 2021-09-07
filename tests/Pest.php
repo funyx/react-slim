@@ -24,9 +24,14 @@
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
+use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Environment;
+use Slim\Http\Request;
+use Slim\Http\Response;
+
+expect()->extend( 'toBeOne', function() {
+    return $this->toBe( 1 );
+} );
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +44,69 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
-{
-    // ..
+require_once __DIR__ . '/../api/bootstrap.php';
+
+function getRoute($route_name, $params = []) {
+    global $app;
+
+    return $app->getContainer()->get( 'router' )->pathFor( $route_name, $params );
+}
+
+/**
+ * @throws \Throwable
+ */
+function api($method, $uri, $data = null, $headers = null): ResponseInterface {
+    global $app;
+
+    $request = Request::createFromEnvironment( Environment::mock(
+        [
+            'REQUEST_METHOD' => $method,
+            'REQUEST_URI'    => $uri
+        ]
+    ) );
+
+    if( isset( $headers ) && is_array($headers) ) {
+        foreach($headers as $name => $value){
+            $request = $request->withHeader($name, $value);
+        }
+    }
+
+    if( isset( $data ) ) {
+        $request = $request->withParsedBody( $data );
+    }
+
+    return $app->process( $request, new Response() );
+}
+
+/**
+ * @throws \Throwable
+ */
+function get($uri, $data = null, $headers = null): ResponseInterface {
+    return api( 'GET', $uri, $data, $headers );
+}
+
+/**
+ * @throws \Throwable
+ */
+function post($uri, $data = null, $headers = null): ResponseInterface {
+    return api( 'POST', $uri, $data, $headers );
+}
+
+/**
+ * @throws \Throwable
+ */
+function put($uri, $data = null, $headers = null): ResponseInterface {
+    return api( 'PUT', $uri, $data, $headers );
+}
+
+/**
+ * @throws \Throwable
+ */
+function delete($uri, $data = null, $headers = null): ResponseInterface {
+    return api( 'DELETE', $uri, $data, $headers );
+}
+
+function resJson(Response $r, $associative = true){
+    $record = (string) $r->getBody();
+    return json_decode($record, $associative);
 }

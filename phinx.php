@@ -1,9 +1,11 @@
 <?php
+$cfg = require_once __DIR__ . '/api/config.php';
+
 return [
-    'paths' => [
+    'paths'         => [
         'migrations' => '%%PHINX_CONFIG_DIR%%/db/migrations',
-        'seeds' => '%%PHINX_CONFIG_DIR%%/db/seeds'
+        'seeds'      => '%%PHINX_CONFIG_DIR%%/db/seeds'
     ],
-    'environments' => require_once __DIR__ . '/api/config.php',
+    'environments'  => $cfg['db'],
     'version_order' => 'creation'
 ];

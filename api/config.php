@@ -3,48 +3,55 @@
 use JmesPath\Env;
 
 $config = [
-    'db' => [
+    'db'     => [
         'default_migration_table' => 'migration',
-        'default_environment' => $_ENV['ENV'] ?? 'development',
-        'production' => [
+        'default_environment'     => $_ENV['ENV'] ?? 'development',
+        'production'              => [
             'adapter' => 'mysql',
-            'host' => $_ENV['MYSQL_HOST'] ?? 'db',
-            'name' => $_ENV['MYSQL_DATABASE'] ?? 'db',
-            'user' => $_ENV['MYSQL_USER'] ?? 'user',
-            'pass' => $_ENV['MYSQL_PASSWORD'] ?? 'password',
-            'port' => $_ENV['MYSQL_PORT'] ?? '3306',
+            'host'    => $_ENV['MYSQL_HOST'] ?? 'db',
+            'name'    => $_ENV['MYSQL_DATABASE'] ?? 'db',
+            'user'    => $_ENV['MYSQL_USER'] ?? 'user',
+            'pass'    => $_ENV['MYSQL_PASSWORD'] ?? 'password',
+            'port'    => $_ENV['MYSQL_PORT'] ?? '3306',
             'charset' => 'utf8',
         ],
-        'development' => [
+        'development'             => [
             'adapter' => 'mysql',
-            'host' => $_ENV['MYSQL_HOST'] ?? 'db',
-            'name' => $_ENV['MYSQL_DATABASE'] ?? 'db',
-            'user' => $_ENV['MYSQL_USER'] ?? 'user',
-            'pass' => $_ENV['MYSQL_PASSWORD'] ?? 'password',
-            'port' => $_ENV['MYSQL_PORT'] ?? '3306',
+            'host'    => $_ENV['MYSQL_HOST'] ?? 'db',
+            'name'    => $_ENV['MYSQL_DATABASE'] ?? 'db',
+            'user'    => $_ENV['MYSQL_USER'] ?? 'user',
+            'pass'    => $_ENV['MYSQL_PASSWORD'] ?? 'password',
+            'port'    => $_ENV['MYSQL_PORT'] ?? '3306',
             'charset' => 'utf8',
         ],
-        'testing' => [
+        'testing'                 => [
             'adapter' => 'mysql',
-            'host' => $_ENV['MYSQL_HOST'] ?? 'db',
-            'name' => $_ENV['MYSQL_DATABASE'] ?? 'db',
-            'user' => $_ENV['MYSQL_USER'] ?? 'user',
-            'pass' => $_ENV['MYSQL_PASSWORD'] ?? 'password',
-            'port' => $_ENV['MYSQL_PORT'] ?? '3306',
+            'host'    => $_ENV['MYSQL_HOST'] ?? 'db',
+            'name'    => $_ENV['MYSQL_DATABASE'] ?? 'db',
+            'user'    => $_ENV['MYSQL_USER'] ?? 'user',
+            'pass'    => $_ENV['MYSQL_PASSWORD'] ?? 'password',
+            'port'    => $_ENV['MYSQL_PORT'] ?? '3306',
             'charset' => 'utf8',
         ]
     ],
-    'api' => [
-        // https://www.slimframework.com/docs/v3/objects/application.html#slim-default-settings
+    'api'    => [
         'settings' => [
-            'displayErrorDetails' => true
+            'displayErrorDetails' => false
         ]
+    ],
+    'format' => [
+        'date'     => 'Y-m-d',
+        'datetime' => 'Y-m-d H:i:s',
+        'time'     => 'H:i:s'
     ]
 ];
 
 if( !function_exists( 'config' ) ) {
     function config($value, $default = null) {
         global $config;
-        return Env::search($value, $config);
+
+        return Env::search( $value, $config );
     }
 }
+
+return $config;
