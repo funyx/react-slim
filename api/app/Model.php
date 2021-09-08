@@ -1,6 +1,6 @@
 <?php
 
-namespace API;
+namespace App;
 
 class Model {
     protected \PDO $pdo;

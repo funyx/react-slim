@@ -1,5 +1,5 @@
 <?php
-$cfg = require_once __DIR__ . '/api/config.php';
+$cfg = require_once __DIR__ . '/app/config.php';
 
 return [
     'paths'         => [

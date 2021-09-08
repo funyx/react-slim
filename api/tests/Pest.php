@@ -44,7 +44,7 @@ expect()->extend( 'toBeOne', function() {
 |
 */
 
-require_once __DIR__ . '/../api/bootstrap.php';
+require_once __DIR__ . '/../app/bootstrap.php';
 
 function getRoute($route_name, $params = []) {
     global $app;

@@ -1,8 +1,8 @@
 <?php
 
-namespace API\Model;
+namespace App\Model;
 
-use API\Model;
+use App\Model;
 
 class UserModel extends Model {
     public function collection(int $offset = 0,int $limit = 10): array|null {

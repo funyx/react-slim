@@ -4,12 +4,12 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "API\\": "api/"
+            "App\\": "app/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "API\\Tests\\": "tests/"
+            "App\\Tests\\": "tests/"
         }
     },
     "require-dev": {

@@ -1,12 +1,12 @@
 <?php
 
-namespace API\Controller;
+namespace App\Controller;
 
-use API\Model\UserModel;
+use App\Model\UserModel;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class UserController extends \API\Controller {
+class UserController extends \App\Controller {
     public function collection(Request $request, Response $response): Response {
         $result = ( new UserModel() )->collection(
             offset: $request->getParam( 'offset', 0 ),
