@@ -106,7 +106,7 @@ function delete($uri, $data = null, $headers = null): ResponseInterface {
     return api( 'DELETE', $uri, $data, $headers );
 }
 
-function resJson(Response $r, $associative = true){
+function resJson(ResponseInterface $r, $associative = true){
     $record = (string) $r->getBody();
     return json_decode($record, $associative);
 }

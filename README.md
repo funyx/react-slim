@@ -8,5 +8,5 @@
 
 #### Cheat sheet
 - composer `docker compose exec php composer`
-- phpunit `docker compose exec php ./vendor/bin/phpunit`
+- pest `docker compose exec php ./vendor/bin/pest`
 - phinx `docker compose exec php ./vendor/bin/phinx`

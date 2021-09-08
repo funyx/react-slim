@@ -37,6 +37,9 @@ $config = [
     'api'    => [
         'settings' => [
             'displayErrorDetails' => false
+        ],
+        'collection' => [
+            'limit' => 10
         ]
     ],
     'format' => [
