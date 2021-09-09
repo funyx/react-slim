@@ -37,8 +37,11 @@ services:
       - .env
     environment:
       - PORT=${APP_ADMIN_PORT}
-      - NODE_ENV=development
+      - NODE_ENV=${ENV}
       - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_PUBLIC_URL=${APP_ADMIN_BASE_URL}
+      - REACT_APP_ADMIN_BASE_URL=${APP_ADMIN_BASE_URL}
+      - REACT_APP_BLOG_BASE_URL=${APP_BLOG_BASE_URL}
     ports:
       - ${APP_ADMIN_PORT}:${APP_ADMIN_PORT}
     expose:
@@ -54,8 +57,11 @@ services:
       - .env
     environment:
       - PORT=${APP_BLOG_PORT}
-      - NODE_ENV=development
+      - NODE_ENV=${ENV}
       - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_PUBLIC_URL=${APP_BLOG_BASE_URL}
+      - REACT_APP_ADMIN_BASE_URL=${APP_ADMIN_BASE_URL}
+      - REACT_APP_BLOG_BASE_URL=${APP_BLOG_BASE_URL}
     ports:
       - ${APP_BLOG_PORT}:${APP_BLOG_PORT}
     expose:
