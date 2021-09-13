@@ -1,10 +1,9 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 use Phinx\Migration\AbstractMigration;
 
-final class CreateUserTable extends AbstractMigration
-{
+final class CreateUserTable extends AbstractMigration {
     /**
      * Change Method.
      *
@@ -16,20 +15,23 @@ final class CreateUserTable extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function up(): void
-    {
-        $t = $this->table('user');
-        $t->addColumn('username', 'string', ['limit' => 255])
-            ->addColumn('email', 'string', ['limit' => 255])
-            ->addColumn('password', 'string', ['limit' => 255])
-            ->addColumn('created_at', 'datetime')
-            ->addColumn('updated_at', 'datetime',['null' => true])
-            ->addIndex(['username', 'email'], ['unique' => true])
+    public function up(): void {
+        $t = $this->table( 'user' );
+        $t->addColumn( 'uuid', 'string', [ 'limit' => 40 ] )
+            ->addColumn( 'username', 'string', [ 'limit' => 30 ] )
+            ->addColumn( 'email', 'string', [ 'limit' => 50 ] )
+            ->addColumn( 'password', 'string', [ 'limit' => 255 ] )
+            ->addColumn( 'first_name', 'string', [ 'limit' => 30, 'null' => true ] )
+            ->addColumn( 'last_name', 'string', [ 'limit' => 30, 'null' => true ] )
+            ->addColumn( 'created_at', 'datetime' )
+            ->addColumn( 'updated_at', 'datetime', [ 'null' => true ] )
+            ->addIndex( 'username', [ 'unique' => true ] )
+            ->addIndex( 'email', [ 'unique' => true ] )
+            ->addIndex( 'uuid', [ 'unique' => true ] )
             ->create();
     }
 
-    public function down(): void
-    {
-        $this->table('user')->drop()->save();
+    public function down(): void {
+        $this->table( 'user' )->drop()->save();
     }
 }
