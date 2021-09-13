@@ -2,16 +2,15 @@
 
 namespace App\Controller;
 
+use App\Controller;
 use App\Model\UserModel;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class UserController extends \App\Controller {
+class UserController extends Controller {
     public function collection(Request $request, Response $response): Response {
-        $result = ( new UserModel() )->collection(
-            offset: $request->getParam( 'offset', 0 ),
-            limit: $request->getParam( 'limit', config( 'api.collection.limit' ) ),
-        );
+        $m = new UserModel();
+        $result = $m->export($m->getPublicFields())->get();
         return match ( gettype( $result ) ) {
             'array' => $response->withStatus( 200 )->withJson( $result ),
             'NULL' => $response->withStatus( 501 )->withJson( [ 'error' => 'Unhandled exception' ] ),
@@ -19,7 +18,12 @@ class UserController extends \App\Controller {
     }
 
     public function create(Request $request, Response $response): Response {
-        $result = (new UserModel())->create( $request->getParsedBody() );
+        $m = new UserModel();
+        $data = $request->getParsedBody();
+        if(count($errors = $m->validate($data))){
+            return $response->withStatus( 400 )->withJson( ['errors' => $errors] );
+        }
+        $result = $m->create( );
         return match ( gettype( $result ) ) {
             'array' => $response->withStatus( 201 )->withJson( $result ),
             'NULL' => $response->withStatus( 501 )->withJson( [ 'error' => 'Unhandled exception' ] ),
@@ -27,7 +31,12 @@ class UserController extends \App\Controller {
     }
 
     public function destroy(Request $request, Response $response, array $params): Response {
-        $result = (new UserModel())->destroy((int) $params['uuid']);
+        $m = new UserModel();
+        $m->loadBy('uuid', $params['uuid']);
+        if(!$m->loaded()){
+            return $response->withStatus( 400 )->withJson( ['errors' => 'Not found'] );
+        }
+        $result = $m->destroy($params['uuid']);
         return match ( $result ) {
             true => $response->withStatus( 204 )->withJson( '' ),
             false => $response->withStatus( 501 )->withJson( [ 'error' => 'Unhandled exception' ] ),
@@ -35,7 +44,8 @@ class UserController extends \App\Controller {
     }
 
     public function read(Request $request, Response $response, array $params): Response {
-        $result = (new UserModel())->read((int) $params['uuid']);
+        $m = (new UserModel());
+        $result = $m->loadBy('uuid', $params['uuid'])->get();
         return match ( gettype($result) ) {
             'array' => $response->withStatus( 200 )->withJson( $result ),
             'NULL' => $response->withStatus( 404 )->withJson( [ 'error' => 'Not Found' ] ),
@@ -43,7 +53,21 @@ class UserController extends \App\Controller {
     }
 
     public function update(Request $request, Response $response, array $params): Response {
-        $result = (new UserModel())->put((int) $params['uuid'], $request->getParsedBody());
+        $m = new UserModel();
+
+        $data = $request->getParsedBody();
+        if(count($errors = $m->validate($data))){
+            return $response->withStatus( 400 )->withJson( ['errors' => $errors] );
+        }
+
+        $m->loadBy('uuid', $params['uuid']);
+        if(!$m->loaded()){
+            return $response->withStatus( 404 )->withJson( ['errors' => 'Not Found'] );
+        }
+        $m->update($data);
+
+        //reload
+        $result = $m->loadBy('uuid', $params['uuid'])->get();
         return match ( gettype($result) ) {
             'array' => $response->withStatus( 200 )->withJson( $result ),
             'NULL' => $response->withStatus( 404 )->withJson( [ 'error' => 'Not Found' ] ),

@@ -189,7 +189,6 @@ class Model extends Container {
         }
         $this->intent = 'select';
         $this->set( $data );
-
         return $validation_errors;
     }
 
