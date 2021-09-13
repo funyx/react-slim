@@ -40,6 +40,11 @@ $config = [
         ],
         'collection' => [
             'limit' => 10
+        ],
+        'jwt' => [
+            'algorithm' => $_ENV['JWT_ALGORITHM'] ?? 'HS256',
+            'secret' => $_ENV['JWT_SECRET'] ?? 'supersecretkeyyoushouldnotcommittogithub',
+            'exp' => '+1 hour' // valid for
         ]
     ],
     'format' => [

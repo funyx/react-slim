@@ -27,7 +27,7 @@ class UserController extends \App\Controller {
     }
 
     public function destroy(Request $request, Response $response, array $params): Response {
-        $result = (new UserModel())->destroy((int) $params['id']);
+        $result = (new UserModel())->destroy((int) $params['uuid']);
         return match ( $result ) {
             true => $response->withStatus( 204 )->withJson( '' ),
             false => $response->withStatus( 501 )->withJson( [ 'error' => 'Unhandled exception' ] ),
@@ -35,7 +35,7 @@ class UserController extends \App\Controller {
     }
 
     public function read(Request $request, Response $response, array $params): Response {
-        $result = (new UserModel())->read((int) $params['id']);
+        $result = (new UserModel())->read((int) $params['uuid']);
         return match ( gettype($result) ) {
             'array' => $response->withStatus( 200 )->withJson( $result ),
             'NULL' => $response->withStatus( 404 )->withJson( [ 'error' => 'Not Found' ] ),
@@ -43,7 +43,7 @@ class UserController extends \App\Controller {
     }
 
     public function update(Request $request, Response $response, array $params): Response {
-        $result = (new UserModel())->udpate((int) $params['id'], $request->getParsedBody());
+        $result = (new UserModel())->put((int) $params['uuid'], $request->getParsedBody());
         return match ( gettype($result) ) {
             'array' => $response->withStatus( 200 )->withJson( $result ),
             'NULL' => $response->withStatus( 404 )->withJson( [ 'error' => 'Not Found' ] ),

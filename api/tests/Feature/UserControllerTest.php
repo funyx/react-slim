@@ -10,9 +10,9 @@ it('should create, read, collect, delete and update user(s)', function () {
 
     ];
 
-    // create
+    // register/create
     $r = post(
-        uri: '/api/user',
+        uri: '/api/auth/register',
         data: [
             'username' => $dataset['username'],
             'password' => $dataset['password'],
@@ -23,24 +23,25 @@ it('should create, read, collect, delete and update user(s)', function () {
     expect($r->getStatusCode())->toBeScalar()->toEqual(201);
     expect($r->getHeaderLine('Content-Type'))->toEqual('application/json');
     $result = resJson($r);
-    expect($result)->toHaveKeys(['id', 'username', 'email', 'created_at', 'updated_at']);
+    expect($result)->toHaveKeys(['id', 'username', 'email', 'token', 'created_at', 'updated_at']);
     expect($result['username'])->toEqual($dataset['username']);
     expect($result['email'])->toEqual($dataset['email']);
     expect($result['updated_at'])->toBeNull();
 
     $dataset['id'] = $result['id'];
+    $dataset['token'] = $result['token'];
     $dataset['created_at'] = $result['created_at'];
     $dataset['updated_at'] = $result['updated_at'];
 
     // collection
-    $r = get(uri: '/api/user');
+    $r = get(uri: '/api/user', headers: ['Authorization' => 'Bearer '.$dataset['token']]);
     expect($r->getStatusCode())->toBeScalar()->toEqual(200);
     expect($r->getHeaderLine('Content-Type'))->toEqual('application/json');
     $result = resJson($r);
     expect(count($result))->toBeGreaterThan(0);
 
     // read
-    $r = get(uri: '/api/user/'.$dataset['id']);
+    $r = get(uri: '/api/user/'.$dataset['id'], headers: ['Authorization' => 'Bearer '.$dataset['token']]);
     expect($r->getStatusCode())->toBeScalar()->toEqual(200);
     expect($r->getHeaderLine('Content-Type'))->toEqual('application/json');
     $result = resJson($r);
@@ -60,7 +61,8 @@ it('should create, read, collect, delete and update user(s)', function () {
         data: [
             'username' => $new_dataset['username'],
             'email' => $new_dataset['email']
-        ]
+        ],
+        headers: ['Authorization' => 'Bearer '.$dataset['token']]
     );
     expect($r->getStatusCode())->toBeScalar()->toEqual(200);
     expect($r->getHeaderLine('Content-Type'))->toEqual('application/json');
@@ -73,7 +75,7 @@ it('should create, read, collect, delete and update user(s)', function () {
     expect($result['updated_at'])->not()->toBeNull();
 
     // delete
-    $r = delete('/api/user/'.$dataset['id']);
+    $r = delete('/api/user/'.$dataset['id'], headers: ['Authorization' => 'Bearer '.$dataset['token']]);
     expect($r->getStatusCode())->toBeScalar()->toEqual(204);
     expect($r->getHeaderLine('Content-Type'))->toEqual('application/json');
 });
