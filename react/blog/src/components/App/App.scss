@@ -1,0 +1,28 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: 50px 1fr 0px;
+  grid-template-areas:
+    "sidenav header"
+    "sidenav main";
+  height: 100vh;
+}
+
+.header {
+  grid-area: header;
+  background-color: $dark;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.sidenav {
+  grid-area: sidenav;
+  background-color: $dark;
+}
+
+.main {
+  grid-area: main;
+}
