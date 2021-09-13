@@ -1,6 +1,30 @@
 ###
+POST http://localhost:8888/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "naomi.carroll@stamm.info",
+  "password": "test"
+}
+###
+POST http://localhost:8888/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "demo411",
+  "password": "demo3",
+  "email": "demo52@demo.com"
+}
+
+###
+GET http://localhost:8888/api/auth/me
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjE1IiwiZW1haWwiOiJkZW1vMkBkZW1vLmNvbSIsInVzZXJuYW1lIjoiZGVtbzIifQ.GtmvU045x2-zVQT7bkLrz0CUslo1fNAgwKV5Q3dWXpE;
+
+###
 GET http://localhost:8888/api/user
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjE2IiwiZW1haWwiOiJkZW1vMkBkZW1vLmNvbSIsInVzZXJuYW1lIjoiZGVtbzIifQ.MOLQfpGHqtw7Rvz-zYtZwjw6fmg7WTwzluLEZuMi18c;
 
 ###
 POST http://localhost:8888/api/user
@@ -17,8 +41,9 @@ DELETE http://localhost:8888/api/user/40
 Content-Type: application/json
 
 ###
-GET http://localhost:8888/api/user/40
+GET http://localhost:8888/api/user/10
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjE2IiwiZW1haWwiOiJkZW1vMkBkZW1vLmNvbSIsInVzZXJuYW1lIjoiZGVtbzIifQ.MOLQfpGHqtw7Rvz-zYtZwjw6fmg7WTwzluLEZuMi18c;
 
 ###
 PUT http://localhost:8888/api/user/9
